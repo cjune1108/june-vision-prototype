@@ -667,6 +667,7 @@
 
     function doSwitch() {
       splitVideo.currentTime = mainVideo.currentTime;
+      mainVideo.pause();
       splitVideo.play().catch(() => {});
       defaultView.classList.add('hidden');
       resourcesView.classList.remove('hidden');
