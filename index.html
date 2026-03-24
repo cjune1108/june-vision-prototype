@@ -66,8 +66,6 @@
     .left-sidebar-btn:hover { background-color: #f0f2f5; border-radius: 8px; }
     .left-sidebar-btn { transition: background-color 0.15s ease; cursor: pointer; }
 
-    .chapter-card { transition: background-color 0.15s ease; }
-    .chapter-card:hover { background-color: rgba(255,255,255,0.15); }
 
     .tool-btn.active { background-color: #E8EEF7; }
     .tool-btn.active span { color: #0F1114; }
@@ -142,6 +140,17 @@
     }
     .overlay-base.visible, .overlay-engagement.visible,
     .overlay-forward.visible, .overlay-rewind.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .player-controls-layer {
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+    #videoPlayer:hover .player-controls-layer,
+    #videoPlayer.controls-visible .player-controls-layer {
       opacity: 1;
       pointer-events: auto;
     }
@@ -243,32 +252,13 @@
         <div class="flex flex-col gap-6 p-4 flex-1">
           <!-- Video Player -->
           <div id="videoPlayer" class="relative bg-black rounded-[10px] overflow-hidden w-full" style="aspect-ratio: 16/9.8;">
-            <img src="video-poster.png?v=2" alt="Video thumbnail" class="absolute inset-0 w-full h-full object-cover" />
+            <video src="tutorial.mp4" loop autoplay class="absolute inset-0 w-full h-full object-cover" id="mainVideo"></video>
             <div id="bottomGradient" class="absolute bottom-0 left-0 right-0 h-[45%] bg-gradient-to-t from-black/80 via-black/40 to-transparent overlay-base"></div>
-            <div id="viewerEngText" class="absolute left-3 font-inter text-[12px] font-semibold tracking-tight overlay-engagement" style="bottom: 189px; color: rgba(232,238,247,0.85);">Viewer Engagement</div>
-            <div id="waveformContainer" class="absolute left-0 right-0 overlay-engagement" style="bottom: 144px; height: 40px;">
+            <div id="viewerEngText" class="absolute left-3 font-inter text-[12px] font-semibold tracking-tight overlay-engagement" style="bottom: 133px; color: rgba(232,238,247,0.85);">Viewer Engagement</div>
+            <div id="waveformContainer" class="absolute left-0 right-0 overlay-engagement" style="bottom: 88px; height: 40px;">
               <svg width="100%" height="40" preserveAspectRatio="none" viewBox="0 0 1000 40">
-                <defs>
-                  <linearGradient id="waveGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stop-color="#5B9EF4" stop-opacity="0.8"/>
-                    <stop offset="100%" stop-color="#3B7DD8" stop-opacity="0.45"/>
-                  </linearGradient>
-                </defs>
-                <path d="M0,35 C50,34 80,33 120,30 C160,26 190,20 220,12 C235,8 245,6 260,6 C275,6 285,8 300,12 C330,20 360,28 400,33 C430,35 460,35 490,30 C520,25 545,18 570,10 C585,6 595,5 610,5 C625,5 635,6 650,10 C675,18 700,26 730,32 C760,35 780,35 810,30 C835,25 855,18 875,10 C890,6 900,4 915,4 C930,4 940,6 955,12 C975,20 990,30 1000,34 L1000,40 L0,40 Z" fill="url(#waveGrad)"/>
-                <path d="M0,35 C50,34 80,33 120,30 C160,26 190,20 220,12 C235,8 245,6 260,6 C275,6 285,8 300,12 C330,20 360,28 400,33 C430,35 460,35 490,30 C520,25 545,18 570,10 C585,6 595,5 610,5 C625,5 635,6 650,10 C675,18 700,26 730,32 C760,35 780,35 810,30 C835,25 855,18 875,10 C890,6 900,4 915,4 C930,4 940,6 955,12 C975,20 990,30 1000,34" fill="none" stroke="#7CB8F7" stroke-width="1.5" opacity="0.9"/>
+                <path d="M0,38 Q10,38 20,37 Q30,36 40,38 Q50,38 55,36 Q60,34 65,30 Q70,26 75,32 Q80,38 90,37 Q95,36 100,34 Q105,30 110,24 Q115,18 120,14 Q125,10 130,6 Q135,3 140,6 Q145,10 150,16 Q155,22 160,28 Q165,33 170,36 Q175,38 185,37 Q190,36 195,32 Q200,28 205,22 Q210,16 215,10 Q218,6 222,3 Q226,1 230,3 Q234,6 238,10 Q242,16 246,22 Q250,28 255,33 Q260,36 270,38 Q280,38 290,37 Q295,36 300,34 Q305,30 310,24 Q315,18 318,12 Q322,7 326,4 Q330,2 334,4 Q338,7 342,12 Q346,18 350,24 Q355,30 360,34 Q365,37 375,38 Q385,38 395,38 Q405,38 410,36 Q415,34 418,30 Q420,26 422,30 Q425,34 430,38 Q440,38 450,37 Q455,36 458,33 Q462,28 466,22 Q470,16 474,10 Q478,6 482,3 Q486,1 490,3 Q494,6 498,10 Q502,16 505,22 Q508,28 512,33 Q516,36 520,38 Q530,38 535,37 Q538,36 540,34 Q543,30 546,24 Q549,18 552,12 Q555,8 558,4 Q561,2 564,4 Q567,8 570,14 Q573,20 576,26 Q580,32 585,36 Q590,38 600,38 Q610,38 620,38 Q630,38 640,37 Q645,36 650,38 Q660,38 670,37 Q675,36 678,33 Q682,28 686,22 Q690,16 694,10 Q697,6 700,3 Q703,1 706,3 Q709,6 712,10 Q715,16 718,22 Q722,28 726,33 Q730,36 735,38 Q745,38 748,37 Q750,36 753,33 Q756,28 759,22 Q762,16 764,12 Q766,8 768,5 Q770,3 772,5 Q774,8 776,12 Q778,16 781,22 Q784,28 788,34 Q792,37 800,38 Q810,38 815,37 Q818,36 820,34 Q822,30 825,34 Q828,37 835,38 Q845,38 850,37 Q853,36 856,33 Q860,28 864,22 Q868,16 872,10 Q875,6 878,3 Q881,1 884,3 Q887,6 890,10 Q893,16 896,22 Q900,28 904,33 Q908,36 915,38 Q925,38 935,38 Q940,37 945,36 Q948,34 950,36 Q953,38 960,38 Q970,38 980,38 Q990,38 1000,38" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="1.2"/>
               </svg>
-            </div>
-            <div id="chapterCard" class="absolute left-2 right-2 chapter-card rounded-lg p-1.5 bg-white/10 backdrop-blur-sm overlay-base" style="bottom: 74px;">
-              <div class="flex items-center gap-3 pr-3">
-                <div class="w-[80px] h-[54px] rounded shrink-0 overflow-hidden">
-                  <img id="chapterThumb" src="code-practice-thumb.png" alt="Diagram thumbnail" class="w-full h-full object-cover" />
-                </div>
-                <div class="flex-1 min-w-0">
-                  <p id="chapterTitle" class="text-white text-sm font-medium font-inter leading-5 truncate">CSS Model Practice</p>
-                  <p id="chapterDesc" class="text-gray-300 text-xs font-inter leading-4 truncate">Practice CSS box model concepts including margin, padding, border and content areas</p>
-                </div>
-                <span class="text-gray-400 text-xs font-inter shrink-0">3:30</span>
-              </div>
             </div>
             <div id="codePracticeThumbnail" class="absolute flex flex-col items-center gap-1 z-30 overlay-forward" style="bottom: 80px; left: calc(58% + 150px); transform: translateX(-50%);">
               <div class="w-[80px] h-[54px] rounded overflow-hidden border border-gray-600">
@@ -282,7 +272,7 @@
               </div>
               <span class="text-white text-xs font-inter font-medium">Workflow diagram</span>
             </div>
-            <div class="absolute left-0 right-0 h-[3px] progress-track group" id="progressTrack" style="bottom: 68px;">
+            <div class="absolute left-0 right-0 h-[3px] progress-track group player-controls-layer" id="progressTrack" style="bottom: 68px;">
               <div class="absolute inset-0 bg-gray-400/40 rounded-full"></div>
               <div class="absolute left-[1.5%] top-0 h-full w-[12%] bg-gray-300/40 rounded-full scrubber-segment overlay-base"></div>
               <div class="absolute left-[14%] top-0 h-full w-[13.5%] bg-gray-300/40 rounded-full scrubber-segment overlay-base"></div>
@@ -298,7 +288,8 @@
               <div class="absolute w-[10px] h-[10px] bg-white border-[3px] border-white rounded-full left-[84%] checkpoint cursor-pointer z-10 overlay-base" data-resource="Summary" title="Section 5"></div>
               <div class="absolute w-[14px] h-[14px] bg-coursera-blue rounded-full shadow-md z-20" style="left: 55%; top: 50%; transform: translateY(-50%); transition: left 0.5s ease;" id="progressThumb"></div>
             </div>
-            <div class="absolute bottom-0 left-0 right-0 h-[66px] flex items-center justify-between px-2">
+            <div class="absolute bottom-0 left-0 right-0 h-[100px] bg-gradient-to-t from-black/70 via-black/40 to-transparent pointer-events-none rounded-b-[10px] player-controls-layer"></div>
+            <div class="absolute bottom-0 left-0 right-0 h-[66px] flex items-center justify-between px-2 player-controls-layer">
               <div class="flex items-center">
                 <button class="player-control flex items-center justify-center w-[44px] h-[60px]" id="playPauseBtn" title="Play/Pause">
                   <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect x="7" y="6" width="4" height="16" rx="1" fill="white"/><rect x="17" y="6" width="4" height="16" rx="1" fill="white"/></svg>
@@ -313,7 +304,7 @@
                   <span class="text-white text-[16px] font-semibold font-sans whitespace-nowrap"><span>0:08</span><span class="text-gray-400"> &nbsp;/ &nbsp;</span><span class="text-gray-300">7:24</span></span>
                 </div>
                 <button id="forwardBtn" class="player-control flex items-center justify-center w-[44px] h-[60px]" title="Forward 10 seconds">
-                  <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M14 6V2l5 5-5 5V8c-3.87 0-7 3.13-7 7s3.13 7 7 7 7-3.13 7-7h2c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9z" fill="white"/><text x="10" y="19" font-size="8" fill="white" font-family="sans-serif" font-weight="bold">10</text></svg>
+                  <svg width="24" height="24" viewBox="0 0 21 23.9902" fill="none"><path d="M10.5 23.9902C9.04167 23.9902 7.67569 23.7131 6.40208 23.1589C5.12847 22.6048 4.02014 21.8561 3.07708 20.9131C2.13403 19.97 1.38542 18.8617 0.83125 17.5881C0.277083 16.3145 0 14.9485 0 13.4902C0 12.0318 0.277083 10.6659 0.83125 9.39225C1.38542 8.11864 2.13403 7.01031 3.07708 6.06725C4.02014 5.12419 5.12847 4.37558 6.40208 3.82142C7.67569 3.26725 9.04167 2.99017 10.5 2.99017H10.675L9.68333 1.9985C9.45 1.76517 9.33819 1.49294 9.34792 1.18183C9.35764 0.870722 9.46944 0.5985 9.68333 0.365167C9.91667 0.131833 10.1938 0.0103056 10.5146 0.000583333C10.8354 -0.00913889 11.1125 0.102667 11.3458 0.336L14.35 3.34017C14.5833 3.5735 14.7 3.84572 14.7 4.15683C14.7 4.46794 14.5833 4.74017 14.35 4.9735L11.3458 7.97767C11.1125 8.211 10.8354 8.32281 10.5146 8.31308C10.1938 8.30336 9.91667 8.18183 9.68333 7.9485C9.46944 7.71517 9.35764 7.44295 9.34792 7.13183C9.33819 6.82072 9.45 6.5485 9.68333 6.31517L10.675 5.3235H10.5C8.225 5.3235 6.29514 6.11586 4.71042 7.70058C3.12569 9.28531 2.33333 11.2152 2.33333 13.4902C2.33333 15.7652 3.12569 17.695 4.71042 19.2798C6.29514 20.8645 8.225 21.6568 10.5 21.6568C12.775 21.6568 14.7049 20.8645 16.2896 19.2798C17.8743 17.695 18.6667 15.7652 18.6667 13.4902C18.6667 13.1596 18.7785 12.8825 19.0021 12.6589C19.2257 12.4353 19.5028 12.3235 19.8333 12.3235C20.1639 12.3235 20.441 12.4353 20.6646 12.6589C20.8882 12.8825 21 13.1596 21 13.4902C21 14.9485 20.7229 16.3145 20.1688 17.5881C19.6146 18.8617 18.866 19.97 17.9229 20.9131C16.9799 21.8561 15.8715 22.6048 14.5979 23.1589C13.3243 23.7131 11.9583 23.9902 10.5 23.9902ZM7 11.7402H6.125C5.87222 11.7402 5.66319 11.6575 5.49792 11.4923C5.33264 11.327 5.25 11.1179 5.25 10.8652C5.25 10.6124 5.33264 10.4034 5.49792 10.2381C5.66319 10.0728 5.87222 9.99017 6.125 9.99017H7.875C8.12778 9.99017 8.33681 10.0728 8.50208 10.2381C8.66736 10.4034 8.75 10.6124 8.75 10.8652V16.1152C8.75 16.3679 8.66736 16.577 8.50208 16.7423C8.33681 16.9075 8.12778 16.9902 7.875 16.9902C7.62222 16.9902 7.41319 16.9075 7.24792 16.7423C7.08264 16.577 7 16.3679 7 16.1152V11.7402ZM11.0833 16.9902C10.7528 16.9902 10.4757 16.8784 10.2521 16.6548C10.0285 16.4311 9.91667 16.1541 9.91667 15.8235V11.1568C9.91667 10.8263 10.0285 10.5492 10.2521 10.3256C10.4757 10.102 10.7528 9.99017 11.0833 9.99017H13.4167C13.7472 9.99017 14.0243 10.102 14.2479 10.3256C14.4715 10.5492 14.5833 10.8263 14.5833 11.1568V15.8235C14.5833 16.1541 14.4715 16.4311 14.2479 16.6548C14.0243 16.8784 13.7472 16.9902 13.4167 16.9902H11.0833ZM11.6667 15.2402H12.8333V11.7402H11.6667V15.2402Z" fill="white"/></svg>
                 </button>
               </div>
               <div class="flex items-center">
@@ -350,7 +341,7 @@
             <div class="flex flex-col gap-6">
               <!-- Simplified Video -->
               <div class="relative bg-black rounded-lg overflow-hidden w-full" style="aspect-ratio: 16/10;">
-                <img src="video-poster.png?v=2" alt="Video thumbnail" class="absolute inset-0 w-full h-full object-cover" />
+                <video src="tutorial.mp4" loop class="absolute inset-0 w-full h-full object-cover" id="splitVideo"></video>
               </div>
               <!-- Title + Save note -->
               <div class="flex items-center justify-between">
@@ -532,9 +523,15 @@
 
   <script>
     const playPauseBtn = document.getElementById('playPauseBtn');
-    let isPlaying = true;
+    const mainVideo = document.getElementById('mainVideo');
+    let isPlaying = false;
     playPauseBtn.addEventListener('click', () => {
       isPlaying = !isPlaying;
+      if (isPlaying) {
+        mainVideo.play();
+      } else {
+        mainVideo.pause();
+      }
       playPauseBtn.innerHTML = isPlaying
         ? '<svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect x="7" y="6" width="4" height="16" rx="1" fill="white"/><rect x="17" y="6" width="4" height="16" rx="1" fill="white"/></svg>'
         : '<svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M8 5v18l15-9L8 5z" fill="white"/></svg>';
@@ -550,9 +547,6 @@
       progressThumb.style.left = (pct - 0.6) + '%';
     });
 
-    const chapterTitle = document.getElementById('chapterTitle');
-    const chapterDesc = document.getElementById('chapterDesc');
-    const chapterThumb = document.getElementById('chapterThumb');
 
     document.querySelectorAll('.checkpoint').forEach(cp => {
       const tooltip = document.createElement('div');
@@ -592,28 +586,21 @@
       hideAllOverlays();
       progressPlayed.style.width = '56%';
       progressThumb.style.left = '55%';
-      chapterTitle.textContent = 'CSS Model Practice';
-      chapterDesc.textContent = 'Practice CSS box model concepts including margin, padding, border and content areas';
-      chapterThumb.src = 'code-practice-thumb.png';
     }
 
     forwardBtn.addEventListener('click', () => {
+      mainVideo.currentTime = Math.min(mainVideo.currentTime + 10, mainVideo.duration || Infinity);
       if (currentState) return;
       currentState = 'forward';
-      chapterTitle.textContent = 'CSS Model Practice';
-      chapterDesc.textContent = 'Practice CSS box model concepts including margin, padding, border and content areas';
-      chapterThumb.src = 'code-practice-thumb.png';
       progressPlayed.style.width = 'calc(58% + 150px)';
       progressThumb.style.left = 'calc(58% + 150px)';
       showOverlays(['overlay-base', 'overlay-engagement', 'overlay-forward']);
     });
 
     rewindBtn.addEventListener('click', () => {
+      mainVideo.currentTime = Math.max(mainVideo.currentTime - 10, 0);
       if (currentState) return;
       currentState = 'rewind';
-      chapterTitle.textContent = 'Diagram \u00b7 Workflow Automation';
-      chapterDesc.textContent = 'Illustrates how user requests travel through the system and how data is processed.';
-      chapterThumb.src = 'workflow-thumb.png';
       progressPlayed.style.width = 'calc(56% - 100px)';
       progressThumb.style.left = 'calc(55% - 100px)';
       showOverlays(['overlay-base', 'overlay-rewind']);
@@ -626,6 +613,7 @@
     const codePracticeThumbnail = document.getElementById('codePracticeThumbnail');
     const workflowThumbnail = document.getElementById('workflowThumbnail');
     const videoPlayer = document.getElementById('videoPlayer');
+    const splitVideo = document.getElementById('splitVideo');
     const resourcesPanel = resourcesView.querySelector('.resources-panel');
     const codePracticeContent = document.getElementById('codePracticeContent');
     const workflowContent = document.getElementById('workflowContent');
@@ -678,6 +666,8 @@
     }
 
     function doSwitch() {
+      splitVideo.currentTime = mainVideo.currentTime;
+      splitVideo.play().catch(() => {});
       defaultView.classList.add('hidden');
       resourcesView.classList.remove('hidden');
       resourcesView.classList.add('view-fade-in');
@@ -697,6 +687,9 @@
       resourcesPanel.classList.add('panel-slide-out');
       resourcesView.classList.add('view-fade-out');
       setTimeout(() => {
+        mainVideo.currentTime = splitVideo.currentTime;
+        mainVideo.play().catch(() => {});
+        splitVideo.pause();
         resourcesView.classList.add('hidden');
         resourcesView.classList.remove('view-fade-out');
         resourcesPanel.classList.remove('panel-slide-out');
